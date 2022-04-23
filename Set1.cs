@@ -22,7 +22,7 @@ namespace cryptopals
 
 		// Challenge 2: Fixed XOR
 		public static bool Challenge2()
-        {
+		{
 			var buffer1 = "1c0111001f010100061a024b53535009181c";
 			var buffer2 = "686974207468652062756c6c277320657965";
 
@@ -34,10 +34,10 @@ namespace cryptopals
 			byte[] xoredBuffer = new byte[bufferSize];
 
 			// XOR each byte in buffer and add it to the xoredBuffer bytearray
-            for (int i = 0; i < bufferSize; i++)
-            {
+			for (int i = 0; i < bufferSize; i++)
+			{
 				xoredBuffer[i] = (byte)(bytesBuffer1[i] ^ bytesBuffer2[i]);
-            }
+			}
 			
 			var finalBufferString = BitConverter.ToString(xoredBuffer).Replace("-", "").ToLower();
 			var expectedResult = "746865206b696420646f6e277420706c6179";
@@ -47,7 +47,7 @@ namespace cryptopals
 
 		// Challenge 3: Single-byte XOR cipher
 		public static string Challenge3()
-        {
+		{
 			var buffer = "1b37373331363f78151b7f2b783431333d78397828372d363c78373e783a393b3736";
 			string chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ123456789 "; // There is better solution for this, but I couldn't get it working so this is fine.
 
@@ -59,13 +59,13 @@ namespace cryptopals
 
 			// Loop through chars and add too messages-dictionary the keys and values that result from XOR-ing
 			foreach (var c in chars)
-            {
+			{
 				byte[] xoredBuffer = new byte[bufferSize];
 
 				for (int i = 0; i < bufferSize; i++)
-                {
+				{
 					xoredBuffer[i] = (byte)(bytesBuffer[i] ^ c);
-                }
+				}
 				
 				var plainText = Encoding.ASCII.GetString(xoredBuffer);
 				messages.Add(c, plainText);
@@ -77,12 +77,12 @@ namespace cryptopals
 				double coefficiency = 0;
 				// See this crypto stackexchange answer about Bhattacharyya coefficiency https://crypto.stackexchange.com/a/56477
 				foreach (var letter in letterCount)
-                {
-                    if (LetterFrequency.TryGetValue(letter.Key, out var frequency))
-                    {
+				{
+					if (LetterFrequency.TryGetValue(letter.Key, out var frequency))
+					{
 						coefficiency += Math.Sqrt(frequency * letter.Count / plainText.Length);
-                    }
-                }
+					}
+				}
 				letterScores.Add(c, coefficiency);
 			}
 
@@ -95,11 +95,11 @@ namespace cryptopals
 			var answer = $"Key is: {highestScoreKey} and decrypted message: {result}";
 
 			return answer;
-        }
+		}
 
 		// Challenge 4: Detect single-character XOR
 		public static string Challenge4()
-        {
+		{
 			// Getting the provided text-file to loop through it
 			string sourceFile = @"D:\4.txt";
 			IEnumerable<string> fileLines = File.ReadLines(sourceFile);
@@ -108,7 +108,7 @@ namespace cryptopals
 			Dictionary<string, double> letterScoresAll = new Dictionary<string, double>();
 
 			foreach (var line in fileLines)
-            {
+			{
 				Dictionary<char, string> messages = new Dictionary<char, string>();
 				Dictionary<char, double> letterScores = new Dictionary<char, double>();
 
@@ -162,11 +162,11 @@ namespace cryptopals
 			var answer = $"Highest scoring key: {totalHighestScoreKey} and decrypted message is: {totalHighestScoreMessage}";
 
 			return answer;
-        }
+		}
 
 		// Challenge 5: Implementing repeating-key XOR
 		public static bool Challenge5()
-        {
+		{
 			var buffer = "Burning 'em, if you ain't quick and nimble\nI go crazy when I hear a cymbal";
 			var key = "ICE";
 			var keyIndex = 0;
@@ -175,8 +175,8 @@ namespace cryptopals
 			byte[] xoredBuffer = new byte[bufferSize];
 
 			// Looping through all the bytes
-            for (int a = 0; a < bytesBuffer.Length; a++)
-            {
+			for (int a = 0; a < bytesBuffer.Length; a++)
+			{
 				// Looping through the chars in key
 				for (int i = 0; i < key.Length+1; i++)
 				{
@@ -193,14 +193,14 @@ namespace cryptopals
 			var expectedResult = "0b3637272a2b2e63622c2e69692a23693a2a3c6324202d623d63343c2a26226324272765272a282b2f20430a652e2c652a3124333a653e2b2027630c692b20283165286326302e27282f";
 
 			return hexString == expectedResult;
-        }
+		}
 
 		// Challenge 6: 
 		public static string Challenge6()
-        {
+		{
 
 			return "";
-        }
+		}
 
 
 
