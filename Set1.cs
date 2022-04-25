@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 
 namespace cryptopals
@@ -346,8 +347,32 @@ namespace cryptopals
 		// Challenge 7: AES in ECB mode
 		public static string Challenge7()
 		{
+			// Getting the source text and making one long string of it, and then convert to bytes
+			string sourceFile = "7.txt";
+			IEnumerable<string> fileLines = File.ReadLines(sourceFile);
+			var lines = "";
+			
+			foreach (string line in fileLines)
+			{
+				lines += line;
+			}
+			var bytes = Convert.FromBase64String(lines);
 
-			return "";
+			// Let's get started with decryption by creating decryptor
+			var key = "YELLOW SUBMARINE";
+			var keyBytes = Encoding.ASCII.GetBytes(key);
+			var aes = new AesManaged
+			{
+				Key = keyBytes,
+				Mode = CipherMode.ECB,
+			};
+			var decryptor = aes.CreateDecryptor();
+
+			// Finally we use the decryptor to transform the the bytes
+			var resultBytes = decryptor.TransformFinalBlock(bytes, 0, bytes.Length);
+
+			string result = Encoding.ASCII.GetString(resultBytes);
+			return "Message: \n" + result;
 		}
 
 
