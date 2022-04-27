@@ -117,7 +117,7 @@ namespace cryptopals
 				var bytesBuffer = Convert.FromHexString(line);
 				var bufferSize = bytesBuffer.Length;
 
-				// Loop through chars and add too messages-dictionary the keys and values that result from XOR-ing
+				// Loop through chars and add to messages-dictionary the keys and values that result from XOR-ing
 				foreach (var c in chars)
 				{
 					byte[] xoredBuffer = new byte[bufferSize];
@@ -272,12 +272,11 @@ namespace cryptopals
 			List<byte> keyBytes = new List<byte>();
 			foreach (var block in transposedBlocks)
 			{
-
-
 				Dictionary<char, string> messages = new Dictionary<char, string>();
 				Dictionary<char, double> letterScores = new Dictionary<char, double>();
 				var bufferSize = block.Length;
 
+				// Loop through the chars to use
 				foreach (var c in chars)
 				{
 					byte[] xoredBuffer = new byte[bufferSize];
@@ -336,10 +335,12 @@ namespace cryptopals
 					keyIndex++;
 				}
 			}
+
 			var hexString = Convert.ToHexString(xoredBytes).ToLower();
 
 			var plainTextResult = Encoding.UTF8.GetString(xoredBytes);
 
+			// Finally print out the answer
 			var answer = "Message: \n" + plainTextResult;
 			return answer;
 		}
@@ -371,11 +372,65 @@ namespace cryptopals
 			// Finally we use the decryptor to transform the the bytes
 			var resultBytes = decryptor.TransformFinalBlock(bytes, 0, bytes.Length);
 
+			// Get the plaintext result and print it out to console
 			string result = Encoding.ASCII.GetString(resultBytes);
 			return "Message: \n" + result;
 		}
 
+		//Challenge 8: Detect AES in ECB mode
+		public static string Challenge8()
+		{
+			// Let's get the sourcefile and convert the lines to bytes
+			string sourceFile = "8.txt";
+			IEnumerable<string> fileLines = File.ReadLines(sourceFile);
+			
+			// List for lines that contain ECB
+			List<string> ecbLines = new List<string>();
 
+			foreach (string line in fileLines)
+			{
+				var lineBytes = Convert.FromHexString(line);
+				var hasEcb = false;
+				List<byte[]> blockBytes = new List<byte[]>();
+
+				// We know from the Challenge that there will be 16 byte ciphertext, so lets make those blocks
+				for (int i = 0; i < lineBytes.Length; i += 16)
+				{
+					var block = lineBytes[i..(i + 16)];
+					blockBytes.Add(block);
+				}
+
+				// Now we loop through the blocks
+				for (int i = 0; i < blockBytes.Count; i++)
+				{
+					// And another loop so we got something to compare against
+					for (int j = 0; j < blockBytes.Count; j++)
+					{
+						var block1 = blockBytes[i];
+						var block2 = blockBytes[j];
+
+						// We compare if the blocks are equal, but not the exact same index, if they are equal we add them to the list and assume the line has ecb mode encryption
+						if (i != j && block1.SequenceEqual(block2))
+						{
+							hasEcb = true;					
+						}
+					}
+				}
+				if (hasEcb)
+				{
+					ecbLines.Add(line);
+				}
+			}
+
+			// Finally print out the answer
+			var answer = "EcbLine(s): ";
+			foreach (var line in ecbLines)
+			{
+				answer += line + "\n";
+			}		
+
+			return answer;
+		}
 
 
 
