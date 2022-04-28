@@ -17,9 +17,6 @@ namespace cryptopals
 			Console.WriteLine($"Challenge 7: " + Set1.Challenge7());
 			Console.WriteLine($"Challenge 8: " + Set1.Challenge8());
 
-
-
-
 			Console.ReadKey();
 		}		
 	}

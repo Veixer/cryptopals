@@ -432,12 +432,6 @@ namespace cryptopals
 			return answer;
 		}
 
-
-
-
-
-
-
 		// Frequency dictionary for letters used in English
 		// Frequencies for letters here: http://pi.math.cornell.edu/~mec/2003-2004/cryptography/subs/frequencies.html
 		// Added empty space to get better results, found the probability here: https://www.researchgate.net/figure/Probability-of-characters-in-English-The-SPACE-character-represented-by-has-the_fig2_47518347
